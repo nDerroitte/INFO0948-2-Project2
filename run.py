@@ -28,5 +28,7 @@ if __name__ == "__main__":
 
     if(part == 1 or part == 0):
         sourceCoding()
-    if(part ==2 or part == 0):
+    if(part == 2 or part == 0):
         channelCoding()
+    if(part == 3 or part == 0):
+        imageCompression()

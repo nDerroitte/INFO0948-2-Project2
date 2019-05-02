@@ -62,3 +62,12 @@ class Huffman:
                 symbol = ""
             char = f.read(1)
         return str_out
+
+    def expectedAvgLength(self, prob_dict):
+        """
+        Compute the expected Average Length of the code
+        """
+        avg_l = 0
+        for key in self.huffman_dict:
+            avg_l += prob_dict[key]* len(self.huffman_dict[key])
+        return avg_l
