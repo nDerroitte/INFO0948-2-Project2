@@ -13,7 +13,7 @@ def writeWave(data):
     """
     write("new_sound.wav",11025,data)
     
-def printWav():
+def printWav(name):
     """
     Print the signal of the .wav sound.
 
@@ -23,6 +23,7 @@ def printWav():
     # read audio samples
     input_data = read("sound.wav")
     audio = input_data[1]
+    fig = plt.figure()
     # plot the first 1024 samples
     plt.plot(audio[0:-1])
     # label the axes
@@ -31,7 +32,8 @@ def printWav():
     # set the title
     plt.title("Sample Wav")
     # display the plot
-    plt.show()
+    fig.savefig(name+".png")
+
 
 def printSortedDict(d):
     """
