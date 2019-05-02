@@ -19,18 +19,23 @@ R = [[0, 0, 1, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 1, 0],
      [0, 0, 0, 0, 0, 0, 1]]
 
-def convert_binary(signal):
-    bin_signal = []
-    for value in signal:
-        bin_signal.append([int(x) for x in '{0:08b}'.format(value)])
-    return np.array(bin_signal)
+def convert_binary(array):
+    bin_array = []
+    for value in array:
+        bin_array.append([int(x) for x in '{0:08b}'.format(value)])
+    return np.array(bin_array)
+
+def bin_array_to_int(bin_array):
+    value = 0
+    for bit in bin_array:
+        value = (value << 1) | bit
+    return value
 
 def convert_int(bin_signal):
-    signal = np.zeros(len(bin_signal), dtype=int)
+    array = np.zeros(len(bin_signal), dtype=int)
     for i in range(len(bin_signal)):
-        for bit in bin_signal[i]:
-            signal[i] = (signal[i] << 1) | bit
-    return signal
+        array[i] = bin_array_to_int(bin_signal[i])
+    return array
 
 def encode_signal(bin_signal):
     coded_sig = np.zeros((len(bin_signal), 14), dtype=int)
@@ -54,15 +59,21 @@ def add_noise(signal):
                 n_signal[i][j] = invert_bit(n_signal[i][j])
     return n_signal
 
-def check_coded_sig(coded_sig):
-    syn_matrix = np.zeros((len(coded_sig), 6), dtype=int)
+def corr_coded_sig(n_coded_sig):
+    c_coded_sig = np.zeros((len(n_coded_sig), 14), dtype=int)
     for i in range(len(coded_sig)):
-        syn_matrix[i][:3] = parity_check(coded_sig[i][:7])
-        syn_matrix[i][3:] = parity_check(coded_sig[i][7:])
-    return syn_matrix
+        c_coded_sig[i][:7] = correct(n_coded_sig[i][:7])
+        c_coded_sig[i][7:] = correct(n_coded_sig[i][7:])
+    return c_coded_sig
 
 def parity_check(code):
     return np.mod(np.dot(H, code), 2)
+
+def correct(code):
+    c_code = code.copy()
+    err_index = max(bin_array_to_int(parity_check(code)) - 1, 0)
+    c_code[err_index] = invert_bit(c_code[err_index])
+    return c_code
 
 def decode_signal(coded_sig):
     bin_signal = np.zeros((len(coded_sig), 8), dtype=int)
@@ -93,6 +104,8 @@ if __name__ == "__main__":
     coded_sig = encode_signal(bin_signal)
     # add noise to the encoded signal
     n_coded_sig = add_noise(coded_sig)
+    # try to correct the n_signal
+    c_coded_sig = corr_coded_sig(n_coded_sig)
     # decode the noised signal
     n_bin_sig = decode_signal(n_coded_sig)
     # convert back into an array of int values
