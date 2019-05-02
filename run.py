@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, ArgumentTypeError
-from ChannelCoding import *
-from SourceCoding import *
+from channel_coding import *
+from source_coding import *
 
 
 if __name__ == "__main__":
