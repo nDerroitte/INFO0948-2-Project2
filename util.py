@@ -7,13 +7,13 @@ import wave
 import sys
 
 
-def writeWave(data):
+def write_wav(filename, sampling_rate, data):
     """
-    Writing a .wav file from the data taken in input at 11025Hz
+    Writing a .wav file from the data taken in input
     """
-    write("new_sound.wav",11025,data)
-    
-def printWav():
+    write(filename, sampling_rate, data)
+
+def print_wav(filename):
     """
     Print the signal of the .wav sound.
 
@@ -21,7 +21,7 @@ def printWav():
     at : https://stackoverflow.com/questions/18625085/how-to-plot-a-wav-file/18625294
     """
     # read audio samples
-    input_data = read("sound.wav")
+    input_data = read(filename)
     audio = input_data[1]
     # plot the first 1024 samples
     plt.plot(audio[0:-1])
