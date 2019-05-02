@@ -1,12 +1,18 @@
 from CST import *
 import collections
 import matplotlib.pyplot as plt
-from scipy.io.wavfile import read
+from scipy.io.wavfile import read, write
 import numpy as np
 import wave
 import sys
 
 
+def writeWave(data):
+    """
+    Writing a .wav file from the data taken in input at 11025Hz
+    """
+    write("new_sound.wav",11025,data)
+    
 def printWav():
     """
     Print the signal of the .wav sound.
