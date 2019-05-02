@@ -13,7 +13,7 @@ def write_wav(filename, sampling_rate, data):
     """
     write(filename, sampling_rate, data)
 
-def print_wav(filename):
+def print_wav(filename, name):
     """
     Print the signal of the .wav sound.
 

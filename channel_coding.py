@@ -85,10 +85,8 @@ def channel_coding():
 if __name__ == "__main__":
     # load the signal from the file
     signal = read('sound.wav')[1]
-    print(signal)
-    print(np.shape(signal))
     # display the original signal
-    #print_wav('sound.wav')
+    print_wav('sound.wav', "original sound")
     # convert the signal into a binary signal
     bin_signal = convert_binary(signal)
     # encode the binary signal using the hamming(7,4) method
@@ -99,9 +97,7 @@ if __name__ == "__main__":
     n_bin_sig = decode_signal(n_coded_sig)
     # convert back into an array of int values
     n_signal = convert_int(n_bin_sig)
-    print(n_signal)
-    print(np.shape(n_signal))
-    # display the decoded signal
-    print_wav('n_sound.wav')
     # save the decoded signal into a new file
     write_wav('n_sound.wav', 11025, n_signal)
+    # display the decoded signal
+    print_wav('n_sound.wav', "noised sound")
