@@ -1,6 +1,6 @@
 from CST import *
 
-def getAlphabet():
+def getAlphabet(size=1):
     """
     Read the text.csv file and return the corresponding alphabet
 
@@ -10,20 +10,26 @@ def getAlphabet():
     # File reading
     f = open(CST.TEXT_FILE, "r")
     char = f.read(1)
+
+    symbol = ""
     # While not at the EOF
     while char:
         # Put in lowercase
         if char.isupper():
             char = char.lower()
+        symbol += char
         # Add to alphabet
-        if char not in alphabet:
-            alphabet.append(char)
+        if len(symbol) == size:
+            if symbol not in alphabet:
+                alphabet.append(symbol)
+            symbol = ""
+
         char = f.read(1)
     # Sort the alphaber
     alphabet.sort()
     return alphabet
 
-def getSymbolCount(alphabet):
+def getSymbolCount(alphabet, size=1):
     """
     From the alphabet, determine the count of each symbols + the total count
     """
@@ -33,13 +39,59 @@ def getSymbolCount(alphabet):
 
     f = open(CST.TEXT_FILE, "r")
     char = f.read(1)
+    symbol = ""
+    # While not at the EOF
+    while char:
+        # Put in lowercase
+        if char.isupper():
+            char = char.lower()
+        symbol += char
+        if len(symbol) == size:
+            char_count +=1
+            dict_symbols[symbol] +=1
+            symbol = ""
+        char = f.read(1)
+    return dict_symbols, char_count
+
+def SimpleEncode():
+    """
+    Perform a simple encoding of the text file
+    """
+    text = ""
+    f = open(CST.TEXT_FILE, "r")
+    char = f.read(1)
     # While not at the EOF
     while char:
         # Put in lowercase
         if char.isupper():
             char = char.lower()
         # Put in lowercase
-        char_count +=1
-        dict_symbols[char] +=1
+        text += char
         char = f.read(1)
-    return dict_symbols, char_count
+    return bin(int.from_bytes(text.encode(), 'big'))
+
+def getAlphabet_2():
+    """
+    Get the alphabet corresponding to two characters at a time
+    """
+    alphabet = []
+    # File reading
+    f = open(CST.TEXT_FILE, "r")
+    char = f.read(1)
+    symbol = ""
+    # While not at the EOF
+    while char:
+        # Put in lowercase
+        if char.isupper():
+            char = char.lower()
+        symbol += char
+
+        if len(symbol) == 2:
+            # Add to alphabet
+            if symbol not in alphabet:
+                alphabet.append(symbol)
+            symbol = ""
+        char = f.read(1)
+    # Sort the alphaber
+    alphabet.sort()
+    return alphabet

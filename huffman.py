@@ -3,7 +3,7 @@ from CST import *
 
 
 class Huffman:
-    def __init__(self):
+    def __init__(self, nb_char=1):
         self.length = 0
         self.huffman_dict = {}
 
@@ -43,18 +43,22 @@ class Huffman:
         huffman_dict[k2] = current_coding + '0'
         return huffman_dict, v1 + v2
 
-    def encode(self):
+    def encode(self, size=1):
         """
         Enocde the text.csv file using the huffman encoding
         """
         str_out = ""
         f = open(CST.TEXT_FILE, "r")
         char = f.read(1)
+        symbol = ""
         # While not at the EOF
         while char:
             # Put in lowercase
             if char.isupper():
                 char = char.lower()
-            str_out+= self.huffman_dict[char]
+            symbol +=char
+            if len(symbol) == size:
+                str_out+= self.huffman_dict[symbol]
+                symbol = ""
             char = f.read(1)
         return str_out
