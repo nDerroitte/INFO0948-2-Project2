@@ -11,6 +11,7 @@ def write_wav(filename, sampling_rate, data):
     """
     Writing a .wav file from the data taken in input
     """
+    data = np.asarray(data, dtype=np.int16)
     write(filename, sampling_rate, data)
 
 def print_wav(filename, name):
