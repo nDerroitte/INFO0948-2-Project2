@@ -98,7 +98,6 @@ if __name__ == "__main__":
     # convert back into an array of int values
     n_signal = convert_int(n_bin_sig)
     # save the decoded signal into a new file
-    data = np.asarray(n_signal, dtype=np.int16)
     write_wav('n_sound.wav', 11025, data)
     # display the decoded signal
     print_wav('n_sound.wav', "noised sound")
