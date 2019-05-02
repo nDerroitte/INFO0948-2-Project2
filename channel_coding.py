@@ -20,24 +20,36 @@ R = [[0, 0, 1, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 1]]
 
 def convert_binary(array):
+    """
+    Convert a array of data into a binary array representing the image
+    """
     bin_array = []
     for value in array:
         bin_array.append([int(x) for x in '{0:08b}'.format(value)])
     return np.array(bin_array)
 
 def bin_array_to_int(bin_array):
+    """
+    Convert a binary array into a int number
+    """
     value = 0
     for bit in bin_array:
         value = (value << 1) | bit
     return value
 
 def convert_int(bin_signal):
+    """
+    Convert a binary array into a int array of data representing the image
+    """
     array = np.zeros(len(bin_signal), dtype=int)
     for i in range(len(bin_signal)):
         array[i] = bin_array_to_int(bin_signal[i])
     return array
 
 def encode_signal(bin_signal):
+    """
+    Encode a binary signal using the hamming algoritm
+    """
     coded_sig = np.zeros((len(bin_signal), 14), dtype=int)
     for i in range(len(bin_signal)):
         coded_sig[i][:7] = hamming(bin_signal[i][:4])
@@ -45,6 +57,9 @@ def encode_signal(bin_signal):
     return coded_sig
 
 def invert_bit(bit):
+    """
+    Simple function allowing to flip a bit
+    """
     if bit:
         bit = 0
     else:
@@ -52,6 +67,9 @@ def invert_bit(bit):
     return bit
 
 def add_noise(coded_sig):
+    """
+    Add noise to the sound signal by flipping bits with a probability of 1%
+    """
     n_coded_sig = coded_sig.copy()
     for i in range(len(n_coded_sig)):
         for j in range(len(n_coded_sig[i])):
@@ -60,6 +78,9 @@ def add_noise(coded_sig):
     return n_coded_sig
 
 def corr_coded_sig(n_coded_sig):
+    """
+    Return the corrected coded signal
+    """
     c_coded_sig = np.zeros((len(n_coded_sig), 14), dtype=int)
     for i in range(len(n_coded_sig)):
         c_coded_sig[i][:7] = correct(n_coded_sig[i][:7])
@@ -67,15 +88,24 @@ def corr_coded_sig(n_coded_sig):
     return c_coded_sig
 
 def parity_check(code):
+    """
+    Perform the parity check
+    """
     return np.mod(np.dot(H, code), 2)
 
 def correct(code):
+    """
+    Correct a code using the hamming error reerting
+    """
     c_code = code.copy()
     err_index = max(bin_array_to_int(parity_check(code)) - 1, 0)
     c_code[err_index] = invert_bit(c_code[err_index])
     return c_code
 
 def decode_signal(coded_sig):
+    """
+    Decode a coded signal
+    """
     bin_signal = np.zeros((len(coded_sig), 8), dtype=int)
     for i in range(len(coded_sig)):
         bin_signal[i][:4] = rev_hamming(coded_sig[i][:7])
@@ -83,9 +113,15 @@ def decode_signal(coded_sig):
     return bin_signal
 
 def hamming(bin_value):
+    """
+    Perfoming the hamming coding
+    """
     return np.mod(np.dot(G, bin_value), 2)
 
 def rev_hamming(code):
+    """
+    Decoding a hamming code
+    """
     return np.dot(R, code)
 
 def channel_coding():
@@ -145,6 +181,9 @@ def channel_coding():
     print_wav('c_sound.wav', "corrected sound")
 
 def compare(array_1, array_2):
+    """
+    Compare 2 signals to check the pourcentage of similarity
+    """
     count = 0
     size = len(array_1)
     for i in range(len(array_1)):
