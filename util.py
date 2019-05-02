@@ -33,7 +33,7 @@ def print_wav(filename, name):
     # set the title
     plt.title("Sample Wav")
     # display the plot
-    fig.savefig(name+".png")
+    fig.savefig(name+".png", dpi=300)
 
 
 def printSortedDict(d):
