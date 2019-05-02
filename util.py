@@ -23,6 +23,7 @@ def print_wav(filename):
     # read audio samples
     input_data = read(filename)
     audio = input_data[1]
+    fig = plt.figure()
     # plot the first 1024 samples
     plt.plot(audio[0:-1])
     # label the axes
@@ -31,7 +32,8 @@ def print_wav(filename):
     # set the title
     plt.title("Sample Wav")
     # display the plot
-    plt.show()
+    fig.savefig(name+".png")
+
 
 def printSortedDict(d):
     """
