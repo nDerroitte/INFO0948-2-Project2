@@ -61,7 +61,7 @@ def add_noise(coded_sig):
 
 def corr_coded_sig(n_coded_sig):
     c_coded_sig = np.zeros((len(n_coded_sig), 14), dtype=int)
-    for i in range(len(coded_sig)):
+    for i in range(len(n_coded_sig)):
         c_coded_sig[i][:7] = correct(n_coded_sig[i][:7])
         c_coded_sig[i][7:] = correct(n_coded_sig[i][7:])
     return c_coded_sig
@@ -89,64 +89,46 @@ def rev_hamming(code):
     return np.dot(R, code)
 
 def channel_coding():
-    pass
-
-def compare(array_1, array_2):
-    count = 0
-    size = len(array_1)
-    for i in range(len(array_1)):
-        if array_1[i] == array_2[i]:
-            count += 1
-    print("Similarity : " + str(count/size))
-
-if __name__ == "__main__":
     # load the signal from the file
     signal = read('sound.wav')[1]
-
     print("QUESTION 8:")
     # plot the original sound
     print_wav('sound.wav', 'original sound')
-    print("original signal plotted")
-    print("")
-
+    print("Original signal plotted")
     print("QUESTION 9:")
-    print("original signal")
+    print("Original signal:")
     print(signal)
-    print("binary signal")
+    print("Binary signal:")
     # convert the signal into a binary signal
     bin_signal = convert_binary(signal)
     print(bin_signal)
-    print("")
 
     print("QUESTION 10:")
-    print("encoded signal")
+    print("Encoded signal:")
     # encode the binary signal using the hamming(7,4) method
     coded_sig = encode_signal(bin_signal)
     print(coded_sig)
-    print("")
 
     print("QUESTION 11:")
-    print("adding noise..")
+    print("Adding noise..")
     # add noise to the encoded signal
     n_coded_sig = add_noise(coded_sig)
-    print("noisy signal")
+    print("Noisy signal:")
     print(n_coded_sig)
     # decode the noisy signal
     n_bin_sig = decode_signal(n_coded_sig)
     # convert back into an array of int values
     n_signal = convert_int(n_bin_sig)
     # compute the similarity with the original signal
-    print("Similarity with the original signal")
+    print("Similarity with the original signal:")
     compare(signal, n_signal)
     # save the noisy signal into a wav file
     write_wav('n_sound.wav', 11025, n_signal)
     # plot the noisy signal
     print_wav('n_sound.wav', 'noisy sound')
-    print("noisy signal plotted")
-    print("")
-
+    print("Noisy signal plotted")
     print("QUESTION 12:")
-    print("corrected signal")
+    print("Corrected signal:")
     # try to correct the n_signal
     c_coded_sig = corr_coded_sig(n_coded_sig)
     print(c_coded_sig)
@@ -155,10 +137,17 @@ if __name__ == "__main__":
     # convert back into an array of int values
     c_signal = convert_int(c_bin_sig)
     # compute the similarity with the original signal
-    print("Similarity with the original signal")
+    print("Similarity with the original signal:")
     compare(signal, c_signal)
     # save the decoded signal into a new file
     write_wav('c_sound.wav', 11025, c_signal)
     # plot the decoded signal
     print_wav('c_sound.wav', "corrected sound")
-    print("")
+
+def compare(array_1, array_2):
+    count = 0
+    size = len(array_1)
+    for i in range(len(array_1)):
+        if array_1[i] == array_2[i]:
+            count += 1
+    print("Similarity : " + str(count/size))
